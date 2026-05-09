@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="空白流汀的个人主页 — 二次元创作者，记录生活与灵感">
+  <meta name="theme-color" content="#6B8F5C">
+  <title>空白流汀 — 个人主页</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍃</text></svg>">
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-layer__gradient"></div>
+    <div class="bg-layer__pattern"></div>
+  </div>
+
+  <!-- Floating Leaves Canvas -->
+  <canvas id="leaf-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav" role="navigation" aria-label="主导航">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="空白流汀 - 返回顶部">
+        <span class="nav__logo-leaf" aria-hidden="true">🍃</span>
+        <span>空白流汀</span>
+      </a>
+      <button class="nav__toggle" id="nav-toggle" aria-label="打开菜单" aria-expanded="false">
+        <span class="nav__toggle-line"></span>
+        <span class="nav__toggle-line"></span>
+        <span class="nav__toggle-line"></span>
+      </button>
+      <ul class="nav__links" id="nav-links" role="list">
+        <li><a href="#about" class="nav__link" data-section="about">关于</a></li>
+        <li><a href="moments.html" class="nav__link">动态</a></li>
+        <li><a href="#gallery" class="nav__link" data-section="gallery">作品</a></li>
+        <li><a href="#guestbook" class="nav__link" data-section="guestbook">留言</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" id="hero">
+    <div class="hero__bg-art" aria-hidden="true">
+      <div class="hero__circle hero__circle--1"></div>
+      <div class="hero__circle hero__circle--2"></div>
+      <div class="hero__circle hero__circle--3"></div>
+    </div>
+    <div class="hero__content">
+      <p class="hero__greeting">Welcome to my world</p>
+      <h1 class="hero__name">空白流汀</h1>
+      <p class="hero__tagline">在代码与画笔之间，捕捉生活中每一个温柔的瞬间</p>
+      <a href="#gallery" class="hero__cta">查看作品</a>
+    </div>
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span class="hero__scroll-text">SCROLL</span>
+      <span class="hero__scroll-line"></span>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="section__inner">
+      <div class="section__header reveal">
+        <p class="section__label">About Me</p>
+        <h2 class="section__title" id="about-title">你好呀</h2>
+        <div class="section__divider"></div>
+      </div>
+      <div class="about__card reveal">
+        <div class="about__avatar-wrap">
+          <img
+            class="about__avatar"
+            src="images/avatar.jpg"
+            alt="空白流汀的头像"
+            loading="lazy"
+            width="140"
+            height="140"
+          >
+          <span class="about__avatar-badge" aria-hidden="true">✨</span>
+        </div>
+        <div class="about__info">
+          <h3 class="about__name">空白流汀</h3>
+          <p class="about__title">二次元创作者 / 代码与艺术的探索者</p>
+          <p class="about__bio">
+            喜欢用画笔和键盘记录生活中的美好瞬间。热爱二次元文化、插画创作与前端开发。
+            相信技术与艺术可以交织出最温柔的世界。在这里，你可以看到我的日常动态、作品分享，
+            以及一些随心写下的文字。希望这些内容能为你带来一丝温暖与灵感。
+          </p>
+          <div class="about__tags">
+            <span class="about__tag">🎨 插画</span>
+            <span class="about__tag">💻 前端开发</span>
+            <span class="about__tag">📷 摄影</span>
+            <span class="about__tag">🎮 游戏</span>
+            <span class="about__tag">🌸 二次元</span>
+            <span class="about__tag">☕ 咖啡</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Moments -->
+  <section class="section moments" id="moments" aria-labelledby="moments-title">
+    <div class="section__inner">
+      <div class="section__header reveal">
+        <p class="section__label">Moments</p>
+        <h2 class="section__title" id="moments-title">生活碎片</h2>
+        <div class="section__divider"></div>
+      </div>
+
+      <div class="moments__timeline">
+        <article class="moment-card reveal" aria-label="2026年5月9日的动态">
+          <div class="moment-card__dot" aria-hidden="true"></div>
+          <div class="moment-card__body">
+            <div class="moment-card__header">
+              <img class="moment-card__avatar" src="images/avatar.jpg" alt="" loading="lazy" width="40" height="40">
+              <div class="moment-card__meta">
+                <span class="moment-card__author">空白流汀</span>
+                <time class="moment-card__date" datetime="2026-05-09">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  2026.05.09
+                </time>
+              </div>
+            </div>
+            <p class="moment-card__content">突击框框老师的高等数学，可恶的期中考试</p>
+            <div class="moment-card__images">
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://i0.hdslb.com/bfs/new_dyn/fa8012405144914a2f6916ec20ece017515388738.png@1192w_884h.webp" alt="数学笔记" loading="lazy">
+              </div>
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://i0.hdslb.com/bfs/new_dyn/71da9236e8ee2a1487e3338ba8e7c3c1515388738.png@1180w_884h.webp" alt="数学笔记" loading="lazy">
+              </div>
+            </div>
+            <div class="moment-card__footer">
+              <span class="moment-card__location">
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                宿舍403
+              </span>
+              <button class="moment-card__action" aria-label="喜欢">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>99+</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        
+        <!-- 2026_05_06 -->
+        <article class="moment-card reveal" aria-label="2026年5月8日的动态">
+          <div class="moment-card__dot" aria-hidden="true"></div>
+          <div class="moment-card__body">
+            <div class="moment-card__header">
+              <img class="moment-card__avatar" src="images/avatar.jpg" alt="" loading="lazy" width="40" height="40">
+              <div class="moment-card__meta">
+                <span class="moment-card__author">空白流汀</span>
+                <time class="moment-card__date" datetime="2026-05-08">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  2026.05.08
+                </time>
+              </div>
+            </div>
+            <p class="moment-card__content">晚饭吃的是番茄🍅嘎达汤+手抓饼，香香香...</p>
+            <div class="moment-card__images">
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://i1.hdslb.com/bfs/new_dyn/b2b3f32aaf04ced140d424b3f4e3976d51437316.jpg@1192w_1192h.avif" alt="少女插画" loading="lazy">
+              </div>
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://i1.hdslb.com/bfs/new_dyn/b2f936de77a4fd86ec20e04e76a4c9ce51437316.jpg@1192w.avif" alt="二次元美少女" loading="lazy">
+              </div>
+            </div>
+            <div class="moment-card__footer">
+              <span class="moment-card__location">
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                宿舍403
+              </span>
+              <button class="moment-card__action" aria-label="喜欢">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>1</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Moment 1 -->
+        <article class="moment-card reveal" aria-label="2026年5月7日的动态">
+          <div class="moment-card__dot" aria-hidden="true"></div>
+          <div class="moment-card__body">
+            <div class="moment-card__header">
+              <img class="moment-card__avatar" src="images/avatar.jpg" alt="" loading="lazy" width="40" height="40">
+              <div class="moment-card__meta">
+                <span class="moment-card__author">空白流汀</span>
+                <time class="moment-card__date" datetime="2026-05-07">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  2026.05.07
+                </time>
+              </div>
+            </div>
+            <p class="moment-card__content">春天快结束了，趁着天气好画了一张樱花树下的少女。花瓣飘落的时候真的好治愈啊~ 🌸</p>
+            <div class="moment-card__images">
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://picsum.photos/seed/sakura1/400/400" alt="樱花少女插画" loading="lazy">
+              </div>
+              <div class="moment-card__image-wrap" role="button" tabindex="0" aria-label="查看大图">
+                <img class="moment-card__image" src="https://picsum.photos/seed/sakura2/400/400" alt="樱花风景" loading="lazy">
+              </div>
+            </div>
+            <div class="moment-card__footer">
+              <span class="moment-card__location">
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                工作室
+              </span>
+              <button class="moment-card__action" aria-label="喜欢">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span>12</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="moments__more reveal">
+        <a href="moments.html" class="moments__more-btn">
+          查看更多动态
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="section gallery" id="gallery" aria-labelledby="gallery-title">
+    <div class="section__inner">
+      <div class="section__header reveal">
+        <p class="section__label">Gallery</p>
+        <h2 class="section__title" id="gallery-title">作品集</h2>
+        <div class="section__divider"></div>
+      </div>
+      <div class="gallery__grid">
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：落日森林">
+          <img class="gallery__image" src="https://picsum.photos/seed/work1/600/800" alt="落日森林" loading="lazy" width="600" height="800">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">落日森林</span>
+            <span class="gallery__item-desc">2026 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：小小水母">
+          <img class="gallery__image" src="https://picsum.photos/seed/work2/600/750" alt="小小水母" loading="lazy" width="600" height="750">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">小小水母</span>
+            <span class="gallery__item-desc">2026 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：海浪吹礁🌊">
+          <img class="gallery__image" src="https://picsum.photos/seed/work3/600/600" alt="海浪吹礁🌊" loading="lazy" width="600" height="600">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">海浪吹礁🌊</span>
+            <span class="gallery__item-desc">2026 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：你看是吊桥">
+          <img class="gallery__image" src="https://picsum.photos/seed/work4/600/800" alt="你看是吊桥" loading="lazy" width="600" height="800">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">你看是吊桥</span>
+            <span class="gallery__item-desc">2025 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：大大大戈壁">
+          <img class="gallery__image" src="https://picsum.photos/seed/work5/600/750" alt="大大大戈壁" loading="lazy" width="600" height="750">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">大大大戈壁</span>
+            <span class="gallery__item-desc">2025 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：森森林林">
+          <img class="gallery__image" src="https://picsum.photos/seed/work6/600/600" alt="森森林林" loading="lazy" width="600" height="600">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">森森林林</span>
+            <span class="gallery__item-desc">2025 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：最后的雪山">
+          <img class="gallery__image" src="https://picsum.photos/seed/work7/600/800" alt="最后的雪山" loading="lazy" width="600" height="800">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">最后的雪山</span>
+            <span class="gallery__item-desc">2025 · 数字插画</span>
+          </div>
+        </div>
+        <div class="gallery__item reveal" role="button" tabindex="0" aria-label="查看作品：黑鹰坠落">
+          <img class="gallery__image" src="https://picsum.photos/seed/work8/600/750" alt="黑鹰坠落" loading="lazy" width="600" height="750">
+          <div class="gallery__overlay">
+            <span class="gallery__item-title">黑鹰坠落</span>
+            <span class="gallery__item-desc">2026 · 数字插画</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guestbook -->
+  <section class="section guestbook" id="guestbook" aria-labelledby="guestbook-title">
+    <div class="section__inner">
+      <div class="section__header reveal">
+        <p class="section__label">Guestbook</p>
+        <h2 class="section__title" id="guestbook-title">留言板</h2>
+        <div class="section__divider"></div>
+      </div>
+
+      <div class="guestbook__form-card reveal">
+        <h3 class="guestbook__form-title">
+          <span aria-hidden="true">✉️</span>
+          留下你的足迹吧
+        </h3>
+        <form id="guestbook-form" novalidate>
+          <div class="guestbook__form-row">
+            <div class="form-group">
+              <label class="form-group__label" for="gb-name">昵称</label>
+              <input class="form-group__input" type="text" id="gb-name" name="name" placeholder="你的昵称" required maxlength="20" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-group__label" for="gb-email">邮箱（选填）</label>
+              <input class="form-group__input" type="email" id="gb-email" name="email" placeholder="your@email.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-group__label" for="gb-message">留言内容</label>
+            <textarea class="form-group__textarea" id="gb-message" name="message" placeholder="写点什么吧~" required maxlength="500" rows="4"></textarea>
+          </div>
+          <button type="submit" class="form-group__submit">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            发送留言
+          </button>
+          <p class="form-group__message">留言暂不可用</p>
+        </form>
+      </div>
+
+      <div class="guestbook__messages" id="guestbook-messages" role="list" aria-label="留言列表">
+        <!-- Pre-filled messages -->
+        <div class="guestbook__message" role="listitem">
+          <div class="guestbook__message-header">
+            <div class="guestbook__message-avatar" aria-hidden="true">樱</div>
+            <div>
+              <div class="guestbook__message-name">樱花猫猫</div>
+              <div class="guestbook__message-time">2026.05.06</div>
+            </div>
+          </div>
+          <p class="guestbook__message-text">主页好漂亮！清新自然的风格太舒服了，期待看到更多作品~ 🌿</p>
+        </div>
+        <div class="guestbook__message" role="listitem">
+          <div class="guestbook__message-header">
+            <div class="guestbook__message-avatar" aria-hidden="true">星</div>
+            <div>
+              <div class="guestbook__message-name">星夜旅人</div>
+              <div class="guestbook__message-time">2026.05.01</div>
+            </div>
+          </div>
+          <p class="guestbook__message-text">路过留爪~ 你的插画风格好治愈，特别是那张樱花少女，花瓣的质感画得太棒了！</p>
+        </div>
+        <div class="guestbook__message" role="listitem">
+          <div class="guestbook__message-header">
+            <div class="guestbook__message-avatar" aria-hidden="true">云</div>
+            <div>
+              <div class="guestbook__message-name">云端书屋</div>
+              <div class="guestbook__message-time">2026.04.25</div>
+            </div>
+          </div>
+          <p class="guestbook__message-text">从友链过来的，主页设计得好有品味！绿色系配色看着很舒服，已收藏 ✨</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__content">
+      <p class="footer__text">
+        🍃 空白流汀 &copy; 2026 &mdash; 用心记录每一个瞬间
+      </p>
+      <nav class="footer__links" aria-label="页脚链接">
+        <a href="#hero" class="footer__link">回到顶部</a>
+        <a href="#about" class="footer__link">关于我</a>
+        <a href="moments.html" class="footer__link">动态</a>
+        <a href="#gallery" class="footer__link">作品</a>
+        <a href="#guestbook" class="footer__link">留言</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片预览">
+    <button class="lightbox__close" id="lightbox-close" aria-label="关闭预览">&times;</button>
+    <img class="lightbox__image" id="lightbox-image" src="" alt="">
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="back-to-top" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
