@@ -959,6 +959,18 @@ input, textarea {
   color: var(--color-sage-dark);
 }
 
+.moment-card__action.liked {
+  color: var(--color-coral);
+}
+
+.moment-card__action.liked svg {
+  fill: var(--color-coral);
+}
+
+.moment-card__like-btn:hover {
+  color: var(--color-coral);
+}
+
 .moment-card__action svg {
   width: 16px;
   height: 16px;
@@ -1060,7 +1072,7 @@ input, textarea {
   background: linear-gradient(180deg, transparent, var(--color-mist) 30%, var(--color-mist) 70%, transparent);
 }
 
-.guestbook__form-card {
+.guestbook__card {
   background: var(--color-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1074,7 +1086,7 @@ input, textarea {
   margin-right: auto;
 }
 
-.guestbook__form-title {
+.guestbook__card-title {
   font-family: var(--font-display);
   font-size: 1.2rem;
   color: var(--color-ink);
@@ -1082,81 +1094,6 @@ input, textarea {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-}
-
-.guestbook__form-row {
-  display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-md);
-}
-
-.guestbook__form-row .form-group {
-  flex: 1;
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group__label {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-ink-light);
-  margin-bottom: 6px;
-  letter-spacing: 0.03em;
-}
-
-.form-group__input,
-.form-group__textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--color-ink);
-  font-size: 0.9rem;
-  transition: all var(--transition-fast);
-  min-height: 44px;
-}
-
-.form-group__input:focus,
-.form-group__textarea:focus {
-  outline: none;
-  border-color: var(--color-sage);
-  box-shadow: 0 0 0 3px rgba(107, 143, 92, 0.15);
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.form-group__textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.form-group__submit {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 12px 28px;
-  background: var(--color-sage);
-  color: var(--color-white);
-  border-radius: var(--radius-full);
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all var(--transition-spring);
-  min-height: 44px;
-  border: none;
-  cursor: pointer;
-}
-
-.form-group__submit:hover {
-  background: var(--color-sage-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(107, 143, 92, 0.3);
-}
-
-.form-group__submit:active {
-  transform: translateY(0) scale(0.98);
 }
 
 /* Messages list */

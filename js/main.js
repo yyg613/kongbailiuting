@@ -15,7 +15,6 @@
     initScrollReveal();
     initActiveNav();
     initLightbox();
-    initGuestbook();
     initBackToTop();
     initLeafCanvas();
     initLikeButtons();
@@ -197,63 +196,6 @@
   }
 
   // ============================
-  // Guestbook form
-  // ============================
-  function initGuestbook() {
-    var form = document.getElementById('guestbook-form');
-    var messagesContainer = document.getElementById('guestbook-messages');
-    if (!form || !messagesContainer) return;
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var nameInput = document.getElementById('gb-name');
-      var messageInput = document.getElementById('gb-message');
-      var name = (nameInput.value || '').trim();
-      var message = (messageInput.value || '').trim();
-
-      if (!name) {
-        nameInput.focus();
-        showToast('请输入昵称哦~');
-        return;
-      }
-      if (!message) {
-        messageInput.focus();
-        showToast('请输入留言内容~');
-        return;
-      }
-
-      // Build message element
-      var today = new Date();
-      var dateStr = today.getFullYear() + '.' +
-        String(today.getMonth() + 1).padStart(2, '0') + '.' +
-        String(today.getDate()).padStart(2, '0');
-
-      var initial = name.charAt(0).toUpperCase();
-
-      var msgEl = document.createElement('div');
-      msgEl.className = 'guestbook__message';
-      msgEl.setAttribute('role', 'listitem');
-      msgEl.innerHTML =
-        '<div class="guestbook__message-header">' +
-          '<div class="guestbook__message-avatar" aria-hidden="true">' + escapeHtml(initial) + '</div>' +
-          '<div>' +
-            '<div class="guestbook__message-name">' + escapeHtml(name) + '</div>' +
-            '<div class="guestbook__message-time">' + dateStr + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<p class="guestbook__message-text">' + escapeHtml(message) + '</p>';
-
-      // Prepend (newest first)
-      messagesContainer.insertBefore(msgEl, messagesContainer.firstChild);
-
-      // Reset form
-      form.reset();
-      showToast('留言成功！感谢你的留言 💚');
-    });
-  }
-
-  // ============================
   // Like buttons (toggle)
   // ============================
   function initLikeButtons() {
@@ -262,15 +204,18 @@
         var countEl = btn.querySelector('span');
         if (!countEl) return;
 
-        var count = parseInt(countEl.textContent, 10) || 0;
+        var text = countEl.textContent.trim();
+        var match = text.match(/^(\d+)(\D*)$/);
+        var count = match ? parseInt(match[1], 10) : 0;
+        var suffix = match ? match[2] : '';
         var isLiked = btn.classList.toggle('liked');
 
         if (isLiked) {
-          countEl.textContent = count + 1;
+          countEl.textContent = (count + 1) + suffix;
           btn.style.color = 'var(--color-coral)';
           btn.querySelector('svg').setAttribute('fill', 'var(--color-coral)');
         } else {
-          countEl.textContent = Math.max(0, count - 1);
+          countEl.textContent = Math.max(0, count - 1) + suffix;
           btn.style.color = '';
           btn.querySelector('svg').setAttribute('fill', 'none');
         }
