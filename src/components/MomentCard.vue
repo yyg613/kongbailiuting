@@ -45,7 +45,7 @@ const props = defineProps({
 
 const openLightbox = inject('openLightbox')
 
-const avatarUrl = '/images/avatar.jpg'
+const avatarUrl = import.meta.env.BASE_URL + 'images/avatar.jpg'
 const cardRef = ref(null)
 const { registerReveal } = useReveal()
 

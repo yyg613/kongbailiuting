@@ -130,7 +130,7 @@ import galleryData from '../data/gallery.json'
 import guestbookData from '../data/guestbook.json'
 
 const { registerReveal } = useReveal()
-const avatarUrl = '/images/avatar.jpg'
+const avatarUrl = import.meta.env.BASE_URL + 'images/avatar.jpg'
 
 const homeMoments = momentsData.slice(0, 4)
 const galleryItems = galleryData
