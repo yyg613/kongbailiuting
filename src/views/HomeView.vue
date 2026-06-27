@@ -94,14 +94,7 @@
           <span aria-hidden="true">✉️</span>
           留下你的足迹吧
         </h3>
-        <script src="https://utteranc.es/client.js"
-                repo="yyg613/kongbailiuting"
-                issue-term="pathname"
-                label="comment"
-                theme="github-light"
-                crossorigin="anonymous"
-                async>
-        </script>
+        <div ref="utterancesContainer" class="guestbook__utterances"></div>
       </div>
 
       <div class="guestbook__messages" id="guestbook-messages" role="list" aria-label="留言列表">
@@ -121,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useReveal } from '../composables/useReveal.js'
 import MomentList from '../components/MomentList.vue'
 import GalleryGrid from '../components/GalleryGrid.vue'
@@ -143,6 +136,7 @@ const momentsMoreRef = ref(null)
 const galleryHeaderRef = ref(null)
 const guestbookHeaderRef = ref(null)
 const guestbookCardRef = ref(null)
+const utterancesContainer = ref(null)
 
 const messageRefs = ref([])
 function registerMessageRef(el, index) {
@@ -152,10 +146,28 @@ function registerMessageRef(el, index) {
   }
 }
 
-onMounted(() => {
+function loadUtterances() {
+  if (!utterancesContainer.value) return
+
+  const script = document.createElement('script')
+  script.src = 'https://utteranc.es/client.js'
+  script.setAttribute('repo', 'yyg613/kongbailiuting')
+  script.setAttribute('issue-term', 'pathname')
+  script.setAttribute('label', 'comment')
+  script.setAttribute('theme', 'github-light')
+  script.setAttribute('crossorigin', 'anonymous')
+  script.async = true
+
+  utterancesContainer.value.appendChild(script)
+}
+
+onMounted(async () => {
   const refs = [aboutHeaderRef, aboutCardRef, momentsHeaderRef, momentsMoreRef, galleryHeaderRef, guestbookHeaderRef, guestbookCardRef]
   refs.forEach((r) => {
     if (r.value) registerReveal(r.value)
   })
+
+  await nextTick()
+  loadUtterances()
 })
 </script>

@@ -1,0 +1,463 @@
+/* ============================================
+   深色模式 - 深邃黑 + 液态玻璃 + 霓虹点缀
+   ============================================ */
+
+[data-theme="cyberpunk"] {
+  /* 主色调 - 深邃黑 */
+  --color-bg-start: #0a0a0f;
+  --color-bg-mid: #12121a;
+  --color-bg-end: #1a1a25;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.06);
+  --color-surface-border: rgba(255, 255, 255, 0.06);
+
+  /* 文字色 */
+  --color-text: #f0f0f5;
+  --color-text-secondary: rgba(255, 255, 255, 0.75);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+
+  /* 霓虹点缀色 - 粉色系 */
+  --color-primary: #ff6b9d;
+  --color-primary-light: #ff8fb1;
+  --color-primary-dark: #ff4081;
+  --color-accent: #b388ff;
+  --color-accent-light: #d1c4e9;
+  --color-success: #69f0ae;
+  --color-warning: #ffd54f;
+
+  /* 阴影和边框 - 减弱效果 */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 15px rgba(255, 107, 157, 0.2);
+
+  /* 霓虹辉光 - 减弱 */
+  --glow-pink: 0 0 8px rgba(255, 107, 157, 0.25), 0 0 30px rgba(255, 107, 157, 0.1);
+  --glow-pink-strong: 0 0 12px rgba(255, 107, 157, 0.4), 0 0 45px rgba(255, 107, 157, 0.15);
+  --glow-purple: 0 0 8px rgba(179, 136, 255, 0.2), 0 0 30px rgba(179, 136, 255, 0.08);
+}
+
+/* 深色模式 - Body */
+[data-theme="cyberpunk"] body {
+  background: linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #1a1a25 100%);
+  background-attachment: fixed;
+  color: var(--color-text);
+}
+
+/* 深色模式 - html 确保完全覆盖 */
+[data-theme="cyberpunk"] html {
+  background: #0a0a0f;
+}
+
+/* 深色模式 - 背景层 */
+[data-theme="cyberpunk"] .bg-layer__gradient {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(255, 255, 255, 0.005) 0%, transparent 50%);
+}
+
+[data-theme="cyberpunk"] .bg-layer__pattern {
+  opacity: 0.01;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* 深色模式 - 字母雨 */
+[data-theme="cyberpunk"] .letter-rain__item {
+  color: rgba(255, 255, 255, 0.03);
+}
+
+/* 深色模式 - 导航栏 */
+[data-theme="cyberpunk"] .nav {
+  background: rgba(10, 10, 15, 0.9);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="cyberpunk"] .nav--scrolled {
+  background: rgba(10, 10, 15, 0.95);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="cyberpunk"] .nav__logo {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .nav__link {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .nav__link:hover {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .nav__link--active {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .nav__theme-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="cyberpunk"] .nav__theme-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 深色模式 - 卡片 - 完全透明 */
+[data-theme="cyberpunk"] .moment-card,
+[data-theme="cyberpunk"] .moment-card__body,
+[data-theme="cyberpunk"] .guestbook__card,
+[data-theme="cyberpunk"] .guestbook__message,
+[data-theme="cyberpunk"] .about__card,
+[data-theme="cyberpunk"] .gallery__item {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] .moment-card:hover,
+[data-theme="cyberpunk"] .moment-card__body:hover,
+[data-theme="cyberpunk"] .guestbook__message:hover,
+[data-theme="cyberpunk"] .gallery__item:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 深色模式 - 隐藏时间线 */
+[data-theme="cyberpunk"] .moments__timeline::before {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="cyberpunk"] .moment-card__dot {
+  display: none;
+}
+
+/* 深色模式 - 移除左侧padding（圆点已隐藏） */
+@media (min-width: 768px) {
+  [data-theme="cyberpunk"] .moment-card {
+    padding-left: 0;
+  }
+  [data-theme="cyberpunk"] .moment-card:nth-child(odd) {
+    padding-right: 40px;
+  }
+  [data-theme="cyberpunk"] .moment-card:nth-child(even) {
+    padding-left: 40px;
+  }
+}
+
+[data-theme="cyberpunk"] .moment-card {
+  padding-left: 0;
+}
+
+/* 深色模式 - 按钮 */
+[data-theme="cyberpunk"] .moment-card__like-btn {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .moment-card__like-btn:hover {
+  color: var(--color-primary);
+}
+
+[data-theme="cyberpunk"] .moment-card__like-btn.liked {
+  color: var(--color-primary);
+}
+
+/* 深色模式 - 链接 */
+[data-theme="cyberpunk"] a {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] a:hover {
+  color: var(--color-text);
+}
+
+/* 深色模式 - 区块标题 */
+[data-theme="cyberpunk"] .section__label {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .section__title {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .section__divider {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 深色模式 - Hero 区域 */
+[data-theme="cyberpunk"] .hero {
+  background: transparent;
+}
+
+[data-theme="cyberpunk"] .hero__circle--1 {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="cyberpunk"] .hero__circle--2 {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="cyberpunk"] .hero__circle--3 {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="cyberpunk"] .hero__greeting {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .hero__name {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .hero__tagline {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="cyberpunk"] .hero__cta {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .hero__cta:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+}
+
+/* 深色模式 - 滚动提示 */
+[data-theme="cyberpunk"] .hero__scroll-text {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .hero__scroll-line {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+}
+
+/* 深色模式 - 页面头部 */
+[data-theme="cyberpunk"] .page-header {
+  background: transparent;
+}
+
+[data-theme="cyberpunk"] .page-header__title {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .page-header__desc {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="cyberpunk"] .page-header__label {
+  color: var(--color-text-muted);
+}
+
+/* 深色模式 - 更多按钮 */
+[data-theme="cyberpunk"] .moments__more-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .moments__more-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+}
+
+/* 深色模式 - 图片画廊覆盖层 */
+[data-theme="cyberpunk"] .gallery__overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 60%);
+}
+
+/* 深色模式 - 图片灯箱 */
+[data-theme="cyberpunk"] .lightbox {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="cyberpunk"] .lightbox__close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+}
+
+[data-theme="cyberpunk"] .lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 深色模式 - Toast */
+[data-theme="cyberpunk"] .toast {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0a0a0f;
+}
+
+/* 深色模式 - 回到顶部 */
+[data-theme="cyberpunk"] .back-to-top {
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .back-to-top:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+/* 深色模式 - 页脚 */
+[data-theme="cyberpunk"] .footer {
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="cyberpunk"] .footer__text {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .footer__link {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .footer__link:hover {
+  color: var(--color-text);
+}
+
+/* 深色模式 - 动态卡片特殊效果 */
+[data-theme="cyberpunk"] .moment-card__dot {
+  display: none;
+}
+
+[data-theme="cyberpunk"] .moment-card__author {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .moment-card__date {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .moment-card__content {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="cyberpunk"] .moment-card__location {
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="cyberpunk"] .moment-card__location svg {
+  filter: none;
+}
+
+[data-theme="cyberpunk"] .moment-card__image-wrap {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="cyberpunk"] .moment-card__header {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="cyberpunk"] .moment-card__footer {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+/* 深色模式 - 留言板 */
+[data-theme="cyberpunk"] .guestbook__card-title {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .guestbook__message-avatar {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .guestbook__message-name {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .guestbook__message-time {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .guestbook__message-text {
+  color: var(--color-text-secondary);
+}
+
+/* 深色模式 - About 区域 */
+[data-theme="cyberpunk"] .about__avatar {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] .about__avatar-wrap {
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] .about__avatar-badge {
+  filter: none;
+}
+
+[data-theme="cyberpunk"] .about__name {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .about__title {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .about__bio {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="cyberpunk"] .about__tag {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .about__tag:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-text);
+  background: transparent;
+}
+
+/* 深色模式 - 移动端菜单 */
+[data-theme="cyberpunk"] .nav__toggle-line {
+  background: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .nav__links {
+  background: rgba(10, 10, 15, 0.98);
+}
+
+[data-theme="cyberpunk"] .nav__toggle--open .nav__toggle-line {
+  background: var(--color-primary);
+}
+
+/* 深色模式 - 走马灯动画 - 移除 */
+/* 深色模式 - 霓虹文字闪烁动画 - 移除 */
+
+/* 深色模式 - 滚动条 */
+[data-theme="cyberpunk"] ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="cyberpunk"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="cyberpunk"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 深色模式 - 选中文字 */
+[data-theme="cyberpunk"] ::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+}

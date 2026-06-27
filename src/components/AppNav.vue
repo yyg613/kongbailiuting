@@ -16,12 +16,20 @@
         <li><router-link to="/#gallery" class="nav__link" exact-active-class="nav__link--active">作品</router-link></li>
         <li><router-link to="/#guestbook" class="nav__link" exact-active-class="nav__link--active">留言</router-link></li>
       </ul>
+      <div class="nav__actions">
+        <button class="nav__theme-btn" @click="toggleTheme" :aria-label="'切换主题: ' + getCurrentThemeInfo().name">
+          <span class="nav__theme-icon">{{ getCurrentThemeInfo().icon }}</span>
+        </button>
+      </div>
     </div>
   </nav>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useTheme } from '../composables/useTheme.js'
+
+const { toggleTheme, getCurrentThemeInfo } = useTheme()
 
 const scrolled = ref(false)
 const menuOpen = ref(false)
