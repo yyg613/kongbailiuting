@@ -5,10 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍃</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="空白流汀的个人主页 — 二次元创作者，记录生活与灵感">
-    <meta name="theme-color" content="#6B8F5C">
+    <meta name="theme-color" content="#6B8F5C" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
     <title>空白流汀 — 个人主页</title>
-    <script type="module" crossorigin src="/kongbailiuting/assets/index-3nEsDook.js"></script>
-    <link rel="stylesheet" crossorigin href="/kongbailiuting/assets/index-Dte2X0et.css">
+    <!-- 防止主题切换闪烁 -->
+    <script>
+      (function() {
+        var theme = localStorage.getItem('kongbailiuting-theme') || 'default';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+    <script type="module" crossorigin src="/kongbailiuting/assets/index-BKQIlirb.js"></script>
+    <link rel="stylesheet" crossorigin href="/kongbailiuting/assets/index-EezMYqDa.css">
   </head>
   <body>
     <div id="app"></div>
