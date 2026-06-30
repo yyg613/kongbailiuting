@@ -125,6 +125,7 @@ const {
   progress,
   formatTime,
   togglePlay,
+  play,
   nextTrack,
   prevTrack,
   seekTo,
@@ -148,10 +149,8 @@ function handleVolumeChange(e) {
 
 function playTrack(index) {
   loadTrack(index)
-  // 需要手动触发播放
   setTimeout(() => {
-    const audio = document.querySelector('audio')
-    if (audio) audio.play()
+    play()
   }, 100)
 }
 

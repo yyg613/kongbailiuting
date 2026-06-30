@@ -14,8 +14,8 @@ const playlist = ref([
   id: 1,
   title: '一样的月光',
   artist: '徐佳莹',
-  src: 'public\\music\\徐佳莹 - 一样的月光.mp3',
-  cover: 'public\\images\\徐佳莹.png'  // 可选封面图
+  src: import.meta.env.BASE_URL + 'music/徐佳莹 - 一样的月光.mp3',
+  cover: import.meta.env.BASE_URL + 'images/徐佳莹.png'  // 可选封面图
 },
   
 ])
