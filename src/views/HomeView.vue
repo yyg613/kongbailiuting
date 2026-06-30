@@ -44,6 +44,11 @@
             <span class="about__tag">🎮 游戏</span>
             <span class="about__tag">🌸 二次元</span>
             <span class="about__tag">☕ 咖啡</span>
+            <a href="https://space.bilibili.com/515388738" 
+               class="about__tag" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               aria-label="在Bilibili上关注空白流汀">👀 bilibili</a>
           </div>
         </div>
       </div>
