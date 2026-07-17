@@ -549,6 +549,27 @@ function handleFileAdd(e) {
   color: var(--color-text-muted);
 }
 
+[data-theme="cyberpunk"] .music-player__btn {
+  color: var(--color-text-muted);
+}
+
+[data-theme="cyberpunk"] .music-player__btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-primary);
+}
+
+[data-theme="cyberpunk"] .music-player__item-title {
+  color: var(--color-text);
+}
+
+[data-theme="cyberpunk"] .music-player__progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="cyberpunk"] .music-player__cover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
   .music-player__right {

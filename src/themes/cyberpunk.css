@@ -34,6 +34,12 @@
   --glow-pink: 0 0 8px rgba(255, 107, 157, 0.25), 0 0 30px rgba(255, 107, 157, 0.1);
   --glow-pink-strong: 0 0 12px rgba(255, 107, 157, 0.4), 0 0 45px rgba(255, 107, 157, 0.15);
   --glow-purple: 0 0 8px rgba(179, 136, 255, 0.2), 0 0 30px rgba(179, 136, 255, 0.08);
+
+  /* 音乐播放器配色 */
+  --color-card: rgba(10, 10, 15, 0.9);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-ink: #f0f0f5;
+  --color-ink-light: rgba(255, 255, 255, 0.5);
 }
 
 /* 深色模式 - Body */
@@ -152,8 +158,11 @@
   }
 }
 
-[data-theme="cyberpunk"] .moment-card {
-  padding-left: 0;
+/* 深色模式 - 移动端卡片左间距（圆点已隐藏，保留适度间距对齐时间线） */
+@media (max-width: 767px) {
+  [data-theme="cyberpunk"] .moment-card {
+    padding-left: 20px;
+  }
 }
 
 /* 深色模式 - 按钮 */
