@@ -5,21 +5,29 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍃</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="空白流汀的个人主页 — 二次元创作者，记录生活与灵感">
-    <meta name="theme-color" content="#6B8F5C" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
-    <title>空白流汀 — 个人主页</title>
+    <meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#211e23" media="(prefers-color-scheme: dark)">
+    <meta property="og:title" content="空白流汀 · 记录生活与灵感">
+    <meta property="og:description" content="在代码与画笔之间，捕捉生活中每一个温柔的瞬间。">
+    <meta property="og:type" content="website">
+    <title>空白流汀 · 记录生活与灵感</title>
     <!-- 防止主题切换闪烁 -->
     <script>
       (function() {
-        var theme = localStorage.getItem('kongbailiuting-theme') || 'default';
+        var theme;
+        try { theme = localStorage.getItem('kongbailiuting-theme'); } catch (e) {}
+        if (theme !== 'default' && theme !== 'cyberpunk') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'cyberpunk' : 'default';
+        }
         document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme === 'cyberpunk' ? 'dark' : 'light';
       })();
     </script>
-    <script type="module" crossorigin src="/kongbailiuting/assets/index-CaLITrat.js"></script>
-    <link rel="stylesheet" crossorigin href="/kongbailiuting/assets/index-BaeNRE-K.css">
+    <script type="module" crossorigin src="/kongbailiuting/assets/index-DCY0KdsM.js"></script>
+    <link rel="stylesheet" crossorigin href="/kongbailiuting/assets/index-DZm5WiCx.css">
   </head>
   <body>
     <div id="app"></div>
-    <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=616971477&bvid=BV11h4y1F73Y&cid=1224971263&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+    <noscript>请启用 JavaScript 以浏览空白流汀的生活碎片与作品。</noscript>
   </body>
 </html>
