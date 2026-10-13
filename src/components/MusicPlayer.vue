@@ -1,18 +1,17 @@
 <template>
   <div class="music-player" :class="{ 'music-player--expanded': isExpanded }">
     <!-- 进度条 -->
-    <div class="music-player__progress-bar" @click="handleProgressClick">
-      <div class="music-player__progress-fill" :style="{ width: progress + '%' }"></div>
-    </div>
+    <input class="music-player__seek" type="range" min="0" max="100" step="0.1" :value="progress" :disabled="!duration" aria-label="播放进度" :aria-valuetext="formatTime(currentTime) + ' / ' + formatTime(duration)" @input="seekTo(Number($event.target.value))">
+    <p v-if="playbackError" class="music-player__error" role="status">{{ playbackError }}</p>
 
     <!-- 主控制区 -->
     <div class="music-player__main">
       <!-- 歌曲信息 -->
       <div class="music-player__info">
-        <div class="music-player__cover" @click="toggleExpanded">
+        <button class="music-player__cover" @click="toggleExpanded" aria-label="展开或收起播放列表" :aria-expanded="isExpanded">
           <span v-if="!currentTrack?.cover">🎵</span>
           <img v-else :src="currentTrack.cover" :alt="currentTrack.title">
-        </div>
+        </button>
         <div class="music-player__meta" @click="toggleExpanded">
           <div class="music-player__title">{{ currentTrack?.title || '未选择音乐' }}</div>
           <div class="music-player__artist">{{ currentTrack?.artist || '点击添加音乐' }}</div>
@@ -21,12 +20,12 @@
 
       <!-- 播放控制 -->
       <div class="music-player__controls">
-        <button class="music-player__btn" @click="prevTrack" aria-label="上一首">
+        <button class="music-player__btn" @click="prevTrack" aria-label="上一首" :disabled="!playlist.length">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
             <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
           </svg>
         </button>
-        <button class="music-player__btn music-player__btn--play" @click="togglePlay" :aria-label="isPlaying ? '暂停' : '播放'">
+        <button class="music-player__btn music-player__btn--play" @click="togglePlay" :disabled="!playlist.length" :aria-label="isPlaying ? '暂停' : '播放'">
           <svg v-if="!isPlaying" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
             <path d="M8 5v14l11-7z"/>
           </svg>
@@ -34,7 +33,7 @@
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
           </svg>
         </button>
-        <button class="music-player__btn" @click="nextTrack" aria-label="下一首">
+        <button class="music-player__btn" @click="nextTrack()" aria-label="下一首" :disabled="!playlist.length">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
           </svg>
@@ -67,7 +66,7 @@
             aria-label="音量"
           >
         </div>
-        <button class="music-player__btn music-player__btn--list" @click="toggleExpanded" aria-label="播放列表">
+        <button class="music-player__btn music-player__btn--list" @click="toggleExpanded" aria-label="播放列表" :aria-expanded="isExpanded" aria-controls="music-playlist">
           <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
             <path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18c-.31-.11-.65-.18-1-.18-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V8h3V6h-5z"/>
           </svg>
@@ -76,7 +75,7 @@
     </div>
 
     <!-- 播放列表面板 -->
-    <div v-if="isExpanded" class="music-player__playlist">
+    <div v-if="isExpanded" id="music-playlist" class="music-player__playlist">
       <div class="music-player__playlist-header">
         <h3>播放列表</h3>
         <label class="music-player__add-btn">
@@ -93,12 +92,11 @@
           :key="track.id"
           class="music-player__item"
           :class="{ 'music-player__item--active': index === currentTrackIndex }"
-          @click="playTrack(index)"
         >
           <span class="music-player__item-index">{{ index + 1 }}</span>
-          <span class="music-player__item-title">{{ track.title }}</span>
+          <button class="music-player__item-title" @click="playTrack(index)" :aria-label="'播放 ' + track.title">{{ track.title }}</button>
           <span class="music-player__item-artist">{{ track.artist }}</span>
-          <button class="music-player__item-remove" @click.stop="removeTrack(track.id)" aria-label="移除">
+          <button class="music-player__item-remove" @click.stop="removeTrack(track.id)" :aria-label="'移除 ' + track.title">
             <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
               <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
             </svg>
@@ -114,6 +112,7 @@ import { useMusic } from '../composables/useMusic.js'
 
 const {
   playlist,
+  playbackError,
   isPlaying,
   currentTrack,
   currentTrackIndex,
@@ -137,21 +136,13 @@ const {
   loadTrack
 } = useMusic()
 
-function handleProgressClick(e) {
-  const rect = e.currentTarget.getBoundingClientRect()
-  const percent = ((e.clientX - rect.left) / rect.width) * 100
-  seekTo(percent)
-}
-
 function handleVolumeChange(e) {
   setVolume(parseFloat(e.target.value))
 }
 
 function playTrack(index) {
   loadTrack(index)
-  setTimeout(() => {
-    play()
-  }, 100)
+  play()
 }
 
 function handleFileAdd(e) {
@@ -167,15 +158,15 @@ function handleFileAdd(e) {
 <style scoped>
 .music-player {
   position: fixed;
-  top: 80px;
-  bottom: auto;
+  top: auto;
+  bottom: 0;
   left: 0;
   right: 0;
-  z-index: 150;
+  z-index: 95;
   background: var(--color-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: none;
+  border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   box-shadow: 0 4px 30px var(--color-shadow);
   transition: all var(--transition-normal);
@@ -185,47 +176,13 @@ function handleFileAdd(e) {
   max-height: 70vh;
 }
 
-.music-player__progress-bar {
-  height: 3px;
-  background: var(--color-border);
-  cursor: pointer;
-  transition: height var(--transition-fast);
-}
-
-.music-player__progress-bar:hover {
-  height: 6px;
-}
-
-.music-player__progress-fill {
-  height: 100%;
-  background: var(--color-sage);
-  transition: width 0.1s linear;
-  position: relative;
-}
-
-.music-player__progress-fill::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  background: var(--color-sage);
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-}
-
-.music-player__progress-bar:hover .music-player__progress-fill::after {
-  opacity: 1;
-}
-
 .music-player__main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 10px 24px calc(10px + env(safe-area-inset-bottom, 0px));
+  max-width: 1200px;
+  margin: auto;
   gap: 20px;
 }
 
@@ -305,12 +262,12 @@ function handleFileAdd(e) {
   width: 44px;
   height: 44px;
   background: var(--color-sage);
-  color: var(--color-white);
+  color: var(--color-bg);
 }
 
 .music-player__btn--play:hover {
   background: var(--color-sage-dark);
-  color: var(--color-white);
+  color: var(--color-bg);
   transform: scale(1.05);
 }
 
@@ -337,7 +294,7 @@ function handleFileAdd(e) {
   appearance: none;
   background: var(--color-border);
   border-radius: 2px;
-  outline: none;
+
 }
 
 .music-player__volume::-webkit-slider-thumb {
@@ -359,6 +316,13 @@ function handleFileAdd(e) {
 }
 
 .music-player__playlist {
+  position: absolute;
+  bottom: 100%;
+  right: 20px;
+  width: min(480px, calc(100vw - 40px));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px 12px 0 0;
   border-top: 1px solid var(--color-border);
   max-height: 300px;
   overflow-y: auto;
@@ -384,7 +348,7 @@ function handleFileAdd(e) {
   gap: 6px;
   padding: 6px 12px;
   background: var(--color-sage);
-  color: var(--color-white);
+  color: var(--color-bg);
   border-radius: 6px;
   font-size: 12px;
   cursor: pointer;
@@ -396,8 +360,17 @@ function handleFileAdd(e) {
 }
 
 .music-player__file-input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
 }
+.music-player__add-btn:focus-within { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+.music-player__seek { display: block; width: 100%; height: 6px; margin: -3px 0 0; appearance: none; background: var(--color-border); accent-color: var(--color-primary); cursor: pointer; }
+.music-player__seek::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary); }
+.music-player__seek::-moz-range-thumb { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--color-primary); }
+.music-player__seek:disabled { opacity: .5; }
+.music-player__error { font-size: 12px; padding: 4px 24px; color: var(--color-primary); }
 
 .music-player__list {
   list-style: none;
@@ -433,6 +406,7 @@ function handleFileAdd(e) {
 }
 
 .music-player__item-title {
+  text-align: left;
   flex: 1;
   font-size: 13px;
   color: var(--color-ink);
@@ -464,7 +438,7 @@ function handleFileAdd(e) {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 1;
   transition: all var(--transition-fast);
 }
 
@@ -477,101 +451,13 @@ function handleFileAdd(e) {
   color: #ff4444;
 }
 
-/* 深色模式样式 */
-[data-theme="cyberpunk"] .music-player {
-  background: rgba(10, 10, 15, 0.9);
-  border-top-color: transparent;
-  border-bottom-color: rgba(255, 107, 157, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 2px 20px rgba(255, 107, 157, 0.1);
-}
-
-[data-theme="cyberpunk"] .music-player__progress-fill {
-  background: var(--color-primary);
-  box-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
-}
-
-[data-theme="cyberpunk"] .music-player__title {
-  color: var(--color-text);
-}
-
-[data-theme="cyberpunk"] .music-player__btn--play {
-  background: var(--color-primary);
-  box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
-}
-
-[data-theme="cyberpunk"] .music-player__btn--play:hover {
-  box-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
-}
-
-[data-theme="cyberpunk"] .music-player__item--active {
-  background: rgba(255, 107, 157, 0.1);
-}
-
-[data-theme="cyberpunk"] .music-player__item--active .music-player__item-title {
-  color: var(--color-primary);
-  text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
-}
-
-[data-theme="cyberpunk"] .music-player__artist {
-  color: var(--color-text-muted);
-}
-
-[data-theme="cyberpunk"] .music-player__time {
-  color: var(--color-text-muted);
-}
-
-[data-theme="cyberpunk"] .music-player__volume {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="cyberpunk"] .music-player__volume::-webkit-slider-thumb {
-  background: var(--color-primary);
-  box-shadow: 0 0 8px rgba(255, 107, 157, 0.5);
-}
-
-[data-theme="cyberpunk"] .music-player__playlist {
-  border-top-color: rgba(255, 107, 157, 0.1);
-}
-
-[data-theme="cyberpunk"] .music-player__playlist-header h3 {
-  color: var(--color-text);
-}
-
-[data-theme="cyberpunk"] .music-player__item:hover {
-  background: rgba(255, 107, 157, 0.05);
-}
-
-[data-theme="cyberpunk"] .music-player__item-index {
-  color: var(--color-text-muted);
-}
-
-[data-theme="cyberpunk"] .music-player__item-artist {
-  color: var(--color-text-muted);
-}
-
-[data-theme="cyberpunk"] .music-player__btn {
-  color: var(--color-text-muted);
-}
-
-[data-theme="cyberpunk"] .music-player__btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-primary);
-}
-
-[data-theme="cyberpunk"] .music-player__item-title {
-  color: var(--color-text);
-}
-
-[data-theme="cyberpunk"] .music-player__progress-bar {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="cyberpunk"] .music-player__cover {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-}
-
 /* 响应式 */
 @media (max-width: 768px) {
+  .music-player__main { gap: 8px; padding-left: 12px; padding-right: 12px; }
+  .music-player__controls { gap: 0; }
+  .music-player__info { gap: 8px; }
+  .music-player__right > .music-player__btn:not(.music-player__btn--list) { display: none; }
+  .music-player__cover { width: 34px; height: 34px; padding: 0; }
   .music-player__right {
     gap: 8px;
   }

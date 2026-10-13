@@ -1,52 +1,20 @@
 import { ref } from 'vue'
-
+import { readStorage, writeStorage } from '../utils/storage.js'
 const THEME_KEY = 'kongbailiuting-theme'
-
-// 主题列表
-export const themes = [
-  { id: 'default', name: '粉色少女', icon: '🌸' },
-  { id: 'cyberpunk', name: '深色模式', icon: '🌙' }
-]
-
-// 当前主题（从 localStorage 读取，默认为 default）
-const currentTheme = ref(localStorage.getItem(THEME_KEY) || 'default')
-
+export const themes = [{ id: 'default', name: '晴日浅色', icon: '☀' }, { id: 'cyberpunk', name: '静夜深色', icon: '☾' }]
+const stored = readStorage(THEME_KEY)
+const currentTheme = ref(themes.some(t => t.id === stored) ? stored : (matchMedia('(prefers-color-scheme: dark)').matches ? 'cyberpunk' : 'default'))
 export function useTheme() {
-  // 设置主题
-  function setTheme(themeId) {
-    currentTheme.value = themeId
-    localStorage.setItem(THEME_KEY, themeId)
-    applyTheme(themeId)
-  }
-
-  // 切换到下一个主题
-  function toggleTheme() {
-    const currentIndex = themes.findIndex(t => t.id === currentTheme.value)
-    const nextIndex = (currentIndex + 1) % themes.length
-    setTheme(themes[nextIndex].id)
-  }
-
-  // 应用主题到 DOM
-  function applyTheme(themeId) {
-    document.documentElement.setAttribute('data-theme', themeId)
-  }
-
-  // 初始化主题（防止闪烁，在 head 中调用）
   function initTheme() {
-    applyTheme(currentTheme.value)
+    document.documentElement.dataset.theme = currentTheme.value
+    document.documentElement.style.colorScheme = currentTheme.value === 'cyberpunk' ? 'dark' : 'light'
   }
-
-  // 获取当前主题信息
-  function getCurrentThemeInfo() {
-    return themes.find(t => t.id === currentTheme.value) || themes[0]
+  function setTheme(id) {
+    if (!themes.some(t => t.id === id)) return
+    currentTheme.value = id
+    writeStorage(THEME_KEY, id)
+    initTheme()
   }
-
-  return {
-    currentTheme,
-    themes,
-    setTheme,
-    toggleTheme,
-    initTheme,
-    getCurrentThemeInfo
-  }
+  function toggleTheme() { setTheme(currentTheme.value === 'default' ? 'cyberpunk' : 'default') }
+  return { currentTheme, themes, initTheme, setTheme, toggleTheme, getCurrentThemeInfo: () => themes.find(t => t.id === currentTheme.value) }
 }

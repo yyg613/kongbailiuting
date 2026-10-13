@@ -1,66 +1,26 @@
 <template>
-  <nav class="nav" :class="{ 'nav--scrolled': scrolled }" id="nav" role="navigation" aria-label="主导航">
+  <nav class="nav" aria-label="主导航" @keydown.esc="closeMenu(true)">
     <div class="nav__inner">
-      <router-link to="/" class="nav__logo" aria-label="空白流汀 - 返回首页">
-        <span class="nav__logo-leaf" aria-hidden="true">🍃</span>
-        <span>空白流汀</span>
-      </router-link>
-      <button class="nav__toggle" :class="{ 'nav__toggle--open': menuOpen }" id="nav-toggle" :aria-label="menuOpen ? '关闭菜单' : '打开菜单'" :aria-expanded="String(menuOpen)" @click="toggleMenu">
-        <span class="nav__toggle-line"></span>
-        <span class="nav__toggle-line"></span>
-        <span class="nav__toggle-line"></span>
-      </button>
-      <ul class="nav__links" :class="{ 'nav__links--open': menuOpen }" id="nav-links" role="list" @click="closeMenu">
-        <li><router-link to="/#about" class="nav__link" exact-active-class="nav__link--active">关于</router-link></li>
-        <li><router-link to="/moments" class="nav__link" exact-active-class="nav__link--active">动态</router-link></li>
-        <li><router-link to="/#gallery" class="nav__link" exact-active-class="nav__link--active">作品</router-link></li>
-        <li><router-link to="/#guestbook" class="nav__link" exact-active-class="nav__link--active">留言</router-link></li>
+      <router-link to="/" class="nav__logo" @click="closeMenu()"><span class="nav__logo-mark" aria-hidden="true">汀</span><span>空白流汀<small>MY LITTLE CORNER</small></span></router-link>
+      <ul id="nav-links" class="nav__links" :class="{ 'nav__links--open': menuOpen }">
+        <li v-for="link in links" :key="link.to"><router-link :to="link.to" class="nav__link" :class="{ 'nav__link--active': route.fullPath === link.to }" :aria-current="route.fullPath === link.to ? 'page' : undefined" @click="closeMenu()">{{ link.label }}</router-link></li>
       </ul>
       <div class="nav__actions">
-        <button class="nav__theme-btn" @click="toggleTheme" :aria-label="'切换主题: ' + getCurrentThemeInfo().name">
-          <span class="nav__theme-icon">{{ getCurrentThemeInfo().icon }}</span>
-        </button>
+        <button class="nav__theme-btn" @click="toggleTheme" :aria-label="currentTheme === 'default' ? '切换到深色模式' : '切换到浅色模式'" :title="getCurrentThemeInfo().name">{{ getCurrentThemeInfo().icon }}</button>
+        <button ref="toggleRef" class="nav__toggle" aria-controls="nav-links" :aria-expanded="menuOpen" :aria-label="menuOpen ? '关闭菜单' : '打开菜单'" @click="menuOpen = !menuOpen">{{ menuOpen ? '×' : '☰' }}</button>
       </div>
     </div>
   </nav>
 </template>
-
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useTheme } from '../composables/useTheme.js'
-
-const { toggleTheme, getCurrentThemeInfo } = useTheme()
-
-const scrolled = ref(false)
+const { currentTheme, toggleTheme, getCurrentThemeInfo } = useTheme()
+const route = useRoute()
 const menuOpen = ref(false)
-
-function toggleMenu() {
-  menuOpen.value = !menuOpen.value
-  document.body.style.overflow = menuOpen.value ? 'hidden' : ''
-}
-
-function closeMenu() {
-  menuOpen.value = false
-  document.body.style.overflow = ''
-}
-
-let ticking = false
-function onScroll() {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      scrolled.value = window.scrollY > 40
-      ticking = false
-    })
-    ticking = true
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', onScroll, { passive: true })
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-  document.body.style.overflow = ''
-})
+const toggleRef = ref(null)
+const links = [{ to: '/', label: '首页' }, { to: '/moments', label: '生活碎片' }, { to: '/#gallery', label: '作品集' }, { to: '/#about', label: '关于我' }, { to: '/#guestbook', label: '留言板' }]
+function closeMenu(focus = false) { menuOpen.value = false; if (focus) toggleRef.value?.focus() }
+watch(() => route.fullPath, () => closeMenu())
 </script>

@@ -1,26 +1,6 @@
 import { ref, computed, onUnmounted } from 'vue'
 
-// 音乐播放列表 - 请将音乐文件放入 public/music/ 目录
-const playlist = ref([
-  // 示例配置，取消注释并修改为你自己的音乐
-  // {
-  //   id: 1,
-  //   title: '你的歌曲名',
-  //   artist: '艺术家',
-  //   src: '/music/your-song.mp3',
-  //   cover: '/music/cover.jpg'  // 可选封面图
-  // },
-  {
-  id: 1,
-  title: '一样的月光',
-  artist: '徐佳莹',
-  src: import.meta.env.BASE_URL + 'music/徐佳莹 - 一样的月光.mp3',
-  cover: import.meta.env.BASE_URL + 'images/徐佳莹.png'  // 可选封面图
-},
-  
-])
-
-// 播放状态
+const playlist = ref([{ id: 1, title: '一样的月光', artist: '徐佳莹', src: import.meta.env.BASE_URL + 'music/徐佳莹 - 一样的月光.mp3', cover: import.meta.env.BASE_URL + 'images/徐佳莹.png' }])
 const isPlaying = ref(false)
 const currentTrackIndex = ref(0)
 const currentTime = ref(0)
@@ -28,241 +8,125 @@ const duration = ref(0)
 const volume = ref(0.7)
 const isMuted = ref(false)
 const isExpanded = ref(false)
-
-// Audio 实例
+const playbackError = ref('')
 let audio = null
+let playRequest = 0
+const objectUrls = new Set()
 
 export function useMusic() {
-  // 当前播放曲目
   const currentTrack = computed(() => playlist.value[currentTrackIndex.value] || null)
-
-  // 进度百分比
-  const progress = computed(() => {
-    if (duration.value === 0) return 0
-    return (currentTime.value / duration.value) * 100
-  })
-
-  // 格式化时间
+  const progress = computed(() => duration.value > 0 ? Math.min(100, currentTime.value / duration.value * 100) : 0)
   function formatTime(seconds) {
-    if (isNaN(seconds) || seconds === 0) return '0:00'
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs.toString().padStart(2, '0')}`
+    if (!Number.isFinite(seconds) || seconds < 0) return '0:00'
+    return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`
   }
-
-  // 初始化音频
   function initAudio() {
     if (audio) return
-
     audio = new Audio()
+    audio.preload = 'none'
     audio.volume = volume.value
-    audio.preload = 'metadata'
-
-    // 事件监听
-    audio.addEventListener('timeupdate', () => {
-      currentTime.value = audio.currentTime
-    })
-
-    audio.addEventListener('loadedmetadata', () => {
-      duration.value = audio.duration
-    })
-
-    audio.addEventListener('ended', () => {
-      nextTrack()
-    })
-
-    audio.addEventListener('play', () => {
-      isPlaying.value = true
-    })
-
-    audio.addEventListener('pause', () => {
-      isPlaying.value = false
-    })
-
-    audio.addEventListener('error', (e) => {
-      console.error('音频加载错误:', e)
-      isPlaying.value = false
-    })
+    audio.muted = isMuted.value
+    audio.ontimeupdate = () => { currentTime.value = audio.currentTime }
+    audio.onloadedmetadata = () => { duration.value = Number.isFinite(audio.duration) ? audio.duration : 0 }
+    audio.onplay = () => { isPlaying.value = true }
+    audio.onpause = () => { isPlaying.value = false }
+    audio.onended = () => { nextTrack(true) }
+    audio.onerror = () => { isPlaying.value = false; playbackError.value = '音乐暂时无法播放，请重试或添加本地音乐。' }
   }
-
-  // 加载曲目
   function loadTrack(index) {
-    if (!audio) initAudio()
-    if (index < 0 || index >= playlist.value.length) return
-
+    if (index < 0 || index >= playlist.value.length) return false
+    initAudio()
+    playRequest++
+    audio.pause()
     currentTrackIndex.value = index
-    const track = playlist.value[index]
-    audio.src = track.src
+    currentTime.value = 0
+    duration.value = 0
+    playbackError.value = ''
+    audio.src = playlist.value[index].src
     audio.load()
+    return true
   }
-
-  // 播放
   async function play() {
-    if (!audio) initAudio()
-
-    // 如果没有加载曲目，加载第一首
-    if (!audio.src || audio.src === window.location.href) {
-      loadTrack(0)
-    }
-
-    try {
-      await audio.play()
-    } catch (e) {
-      console.error('播放失败:', e)
-    }
-  }
-
-  // 暂停
-  function pause() {
-    if (audio) {
-      audio.pause()
+    if (!currentTrack.value) return
+    initAudio()
+    if (!audio.getAttribute('src')) loadTrack(currentTrackIndex.value)
+    const request = ++playRequest
+    playbackError.value = ''
+    try { await audio.play() } catch (error) {
+      if (request === playRequest && error.name !== 'AbortError') {
+        isPlaying.value = false
+        playbackError.value = '播放失败，请点击播放重试，或选择其他音乐。'
+      }
     }
   }
-
-  // 切换播放/暂停
-  function togglePlay() {
-    if (isPlaying.value) {
-      pause()
-    } else {
-      play()
-    }
+  function pause() { playRequest++; audio?.pause() }
+  function togglePlay() { isPlaying.value ? pause() : play() }
+  function nextTrack(forcePlay = false) {
+    if (!playlist.value.length) return
+    const resume = forcePlay || isPlaying.value
+    loadTrack((currentTrackIndex.value + 1) % playlist.value.length)
+    if (resume) play()
   }
-
-  // 下一首
-  function nextTrack() {
-    const nextIndex = (currentTrackIndex.value + 1) % playlist.value.length
-    loadTrack(nextIndex)
-    if (isPlaying.value) {
-      play()
-    }
-  }
-
-  // 上一首
   function prevTrack() {
-    const prevIndex = (currentTrackIndex.value - 1 + playlist.value.length) % playlist.value.length
-    loadTrack(prevIndex)
-    if (isPlaying.value) {
-      play()
-    }
+    if (!playlist.value.length) return
+    const resume = isPlaying.value
+    loadTrack((currentTrackIndex.value - 1 + playlist.value.length) % playlist.value.length)
+    if (resume) play()
   }
-
-  // 跳转到指定时间
   function seekTo(percent) {
-    if (audio && duration.value > 0) {
-      audio.currentTime = (percent / 100) * duration.value
-    }
+    if (audio && duration.value > 0 && Number.isFinite(percent)) audio.currentTime = Math.max(0, Math.min(100, percent)) / 100 * duration.value
   }
-
-  // 设置音量
-  function setVolume(val) {
-    volume.value = Math.max(0, Math.min(1, val))
-    if (audio) {
-      audio.volume = volume.value
-    }
-    if (volume.value > 0) {
-      isMuted.value = false
-    }
+  function setVolume(value) {
+    if (!Number.isFinite(value)) return
+    volume.value = Math.max(0, Math.min(1, value))
+    if (volume.value > 0) isMuted.value = false
+    if (audio) { audio.volume = volume.value; audio.muted = isMuted.value }
   }
-
-  // 切换静音
-  function toggleMute() {
-    isMuted.value = !isMuted.value
-    if (audio) {
-      audio.muted = isMuted.value
-    }
-  }
-
-  // 切换展开/收起
-  function toggleExpanded() {
-    isExpanded.value = !isExpanded.value
-  }
-
-  // 添加音乐到播放列表
-  function addTrack(track) {
-    playlist.value.push({
-      id: Date.now(),
-      ...track
-    })
-  }
-
-  // 从文件添加音乐
+  function toggleMute() { isMuted.value = !isMuted.value; if (audio) audio.muted = isMuted.value }
+  function toggleExpanded() { isExpanded.value = !isExpanded.value }
+  function addTrack(track) { playlist.value.push({ id: crypto.randomUUID(), ...track }) }
   function addTrackFromFile(file) {
     const url = URL.createObjectURL(file)
-    const track = {
-      id: Date.now(),
-      title: file.name.replace(/\.[^/.]+$/, ''), // 移除扩展名
-      artist: '本地音乐',
-      src: url,
-      cover: null
-    }
+    objectUrls.add(url)
+    const track = { id: crypto.randomUUID(), title: file.name.replace(/\.[^/.]+$/, ''), artist: '本地音乐', src: url, cover: null }
     addTrack(track)
     return track
   }
-
-  // 移除音乐
-  function removeTrack(trackId) {
-    const index = playlist.value.findIndex(t => t.id === trackId)
+  function removeTrack(id) {
+    const index = playlist.value.findIndex(track => track.id === id)
     if (index === -1) return
-
-    // 如果删除的是当前播放的曲目
-    if (index === currentTrackIndex.value) {
-      pause()
-      playlist.value.splice(index, 1)
-      if (playlist.value.length > 0) {
-        const newIndex = Math.min(index, playlist.value.length - 1)
-        loadTrack(newIndex)
+    const removed = playlist.value[index]
+    const isCurrent = index === currentTrackIndex.value
+    if (isCurrent) pause()
+    playlist.value.splice(index, 1)
+    if (isCurrent) {
+      if (playlist.value.length) loadTrack(Math.min(index, playlist.value.length - 1))
+      else {
+        currentTrackIndex.value = 0
+        currentTime.value = 0
+        duration.value = 0
+        playbackError.value = ''
+        audio?.removeAttribute('src')
+        audio?.load()
       }
-    } else {
-      playlist.value.splice(index, 1)
-      // 调整当前播放索引
-      if (index < currentTrackIndex.value) {
-        currentTrackIndex.value--
-      }
-    }
+    } else if (index < currentTrackIndex.value) currentTrackIndex.value--
+    if (objectUrls.delete(removed.src)) URL.revokeObjectURL(removed.src)
   }
-
-  // 清理
   function cleanup() {
+    pause()
     if (audio) {
-      audio.pause()
-      audio.src = ''
+      audio.ontimeupdate = audio.onloadedmetadata = audio.onplay = audio.onpause = audio.onended = audio.onerror = null
+      audio.removeAttribute('src')
+      audio.load()
       audio = null
     }
+    for (const url of objectUrls) URL.revokeObjectURL(url)
+    playlist.value = playlist.value.filter(track => !objectUrls.has(track.src))
+    objectUrls.clear()
+    currentTrackIndex.value = 0
+    isPlaying.value = false
+    currentTime.value = duration.value = 0
   }
-
-  // 组件卸载时清理（可选，因为是全局状态）
-  onUnmounted(() => {
-    // 不清理，因为是全局共享状态
-  })
-
-  return {
-    // 状态
-    playlist,
-    isPlaying,
-    currentTrack,
-    currentTrackIndex,
-    currentTime,
-    duration,
-    volume,
-    isMuted,
-    isExpanded,
-    progress,
-
-    // 方法
-    formatTime,
-    play,
-    pause,
-    togglePlay,
-    nextTrack,
-    prevTrack,
-    seekTo,
-    setVolume,
-    toggleMute,
-    toggleExpanded,
-    addTrack,
-    addTrackFromFile,
-    removeTrack,
-    loadTrack,
-    cleanup
-  }
+  onUnmounted(cleanup)
+  return { playlist, isPlaying, currentTrack, currentTrackIndex, currentTime, duration, volume, isMuted, isExpanded, playbackError, progress, formatTime, play, pause, togglePlay, nextTrack, prevTrack, seekTo, setVolume, toggleMute, toggleExpanded, addTrack, addTrackFromFile, removeTrack, loadTrack, cleanup }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="gallery__grid">
     <div v-for="item in items" :key="item.id" ref="itemsRef" class="gallery__item reveal" role="button" tabindex="0" :aria-label="`查看作品：${item.title}`" @click="openImage(item.image, item.title)" @keydown.enter.prevent="openImage(item.image, item.title)" @keydown.space.prevent="openImage(item.image, item.title)">
-      <img referrerpolicy="no-referrer" class="gallery__image" :src="item.image" :alt="item.title" loading="lazy">
+      <div class="gallery__image-wrap"><ContentImage class="gallery__image" :src="item.image" :alt="item.title" /></div>
       <div class="gallery__overlay">
         <span class="gallery__item-title">{{ item.title }}</span>
         <span class="gallery__item-desc">{{ item.desc }}</span>
@@ -13,6 +13,7 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue'
 import { useReveal } from '../composables/useReveal.js'
+import ContentImage from './ContentImage.vue'
 
 const props = defineProps({
   items: { type: Array, required: true }

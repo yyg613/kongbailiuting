@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 
 export function useToast() {
   const toastMessage = ref('')
@@ -15,5 +15,6 @@ export function useToast() {
     }, 2500)
   }
 
+  onUnmounted(() => clearTimeout(toastTimer))
   return { toastMessage, toastVisible, showToast }
 }

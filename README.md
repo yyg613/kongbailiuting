@@ -1,59 +1,34 @@
 # 空白流汀
 
-一个 Vue 3 + Vite 构建的二次元风格个人主页，支持**粉色少女**和**深色模式**两种主题切换。
+Vue 3 + Vite 构建的个人静态博客，以低饱和粉色、纸张质感与清晰排版记录生活与灵感。支持浅色和深色模式，默认跟随系统，手动选择会保存在本机。
 
-## 技术栈
+## 开发与部署
 
-| 类别 | 技术 |
-|------|------|
-| 框架 | Vue 3 (Composition API) |
-| 构建 | Vite |
-| 路由 | Vue Router 4 (Hash 模式) |
-| 样式 | 纯 CSS + CSS 变量 |
-
-## 快速开始
+需要 Node.js 20.19+ 或 22.12+。
 
 ```bash
-# 安装依赖
-npm install
-
-# 开发模式
+npm ci
 npm run dev
-
-# 生产构建
 npm run build
-
-# 预览构建结果
 npm run preview
 ```
 
-## 项目结构
+开发地址：`http://localhost:5173/kongbailiuting/`。生产产物位于 `dist/`，GitHub Actions 自动部署 `main` 分支到 GitHub Pages。`vite.config.js` 中的 `base` 为 `/kongbailiuting/`；部署到其他目录时相应修改。使用 Hash 路由，无需服务器配置路由回退。
 
-```
-src/
-├── App.vue              # 根布局（背景层、灯箱、Toast、回到顶部）
-├── components/
-│   ├── AppNav.vue       # 导航栏 + 主题切换
-│   ├── AppFooter.vue    # 页脚
-│   ├── MusicPlayer.vue  # 底部固定音乐播放器
-│   ├── MomentCard.vue   # 动态卡片组件
-│   ├── MomentList.vue   # 动态时间线列表
-│   └── GalleryGrid.vue  # 作品集网格
-├── views/
-│   ├── HomeView.vue     # 首页
-│   └── MomentsView.vue  # 动态全列表
-├── composables/          # 组合式函数
-│   ├── useTheme.js      # 主题管理
-│   ├── useMusic.js      # 音频播放逻辑
-│   ├── useLightbox.js   # 图片灯箱
-│   ├── useToast.js      # Toast 通知
-│   └── useReveal.js     # 滚动揭示动画
-├── themes/
-│   └── cyberpunk.css    # 深色模式样式
-├── data/                 # JSON 数据源
-└── style.css             # 全局样式 + 粉色主题变量
-```
+## 内容维护
 
-## 部署
+- `src/data/moments.json`：动态。`id` 必须唯一，`date` 使用 `YYYY-MM-DD`。页面自动按时间倒序排列；动态页支持文字、地点、日期搜索和月份筛选，每次展示 6 条。
+- `src/data/gallery.json`：作品与画面收藏。包含标题、描述与图片地址，原作者署名请保留在标题或描述中。
+- `src/data/guestbook.json`：静态精选留言。在线留言由 Utterances 提供，仓库配置位于 `GuestbookComments.vue`。
+- `src/data/contact.js`：收件邮箱和邮件主题。“关于我”和页脚的“给我发邮件”入口使用 `mailto:` 打开访客默认邮件应用，并自动填写收件人和主题。
+- `public/images/avatar.jpg`：个人头像。
+- `src/composables/useMusic.js`：默认播放列表，音乐与封面资源放在 `public/` 下，使用 `import.meta.env.BASE_URL` 拼接路径。
+- `src/views/HomeView.vue`：个人介绍、社交链接与 B 站视频。保留原视频，用户点击后才加载播放器。
 
-项目配置了 GitHub Pages 子路径部署（`/kongbailiuting/`），构建产物在 `dist/` 目录。
+## 交互与体验
+
+点赞只保存本机偏好，不代表服务器实时统计；添加的本地音乐仅在当前会话有效。评论需要 GitHub 账号，首次点击才加载第三方脚本；连接失败时可重试或前往 GitHub 讨论区。外链图片加载失败会显示占位提示。
+
+导航、音乐进度、播放列表和图片预览支持键盘操作。图片预览支持 Escape 关闭、焦点约束与返回；系统开启减少动态效果后会关闭过渡。首页与动态页使用不同页面标题，动态路由单独加载。
+
+全局颜色、主题与响应式布局集中在 `src/style.css`；播放器局部样式位于 `src/components/MusicPlayer.vue`。
